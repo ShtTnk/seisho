@@ -13,7 +13,7 @@ export default function Toppage() {
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      {/* 背景粒子 */}
+      {/* 背景画像粒子 */}
       <ParticleBackground num={30} />
 
       <main style={mainStyle}>
@@ -54,38 +54,59 @@ export default function Toppage() {
   );
 }
 
-// ----------------- 背景粒子 -----------------
+// ----------------- 背景画像降らせ（丸く固定・3種類） -----------------
 function ParticleBackground({ num }: { num: number }) {
   const [particles, setParticles] = useState<
-    { x: number; y: number; size: number; speed: number }[]
+    {
+      x: number;
+      y: number;
+      size: number;
+      speed: number;
+      rotation: number;
+      rotSpeed: number;
+      src: string;
+    }[]
   >([]);
 
+  const images = ["/daddy.jpg", "/mummy.jpg", "/sei-chan.jpg"]; // ←ここに画像3種類
+  const sparkle = new Audio("/sparkle.mp3"); // 公開フォルダに置いた音
+  const [audioAllowed, setAudioAllowed] = useState(false);
+
   useEffect(() => {
+    sparkle.play().catch(() => {});
+    sparkle.loop = true;
     const arr = Array.from({ length: num }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
-      size: Math.random() * 8 + 2,
-      speed: Math.random() * 0.5 + 0.2,
+      size: Math.random() * 50 + 30,
+      speed: Math.random() * 1 + 0.5,
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 2,
+      src: images[Math.floor(Math.random() * images.length)], // ランダム選択
     }));
     setParticles(arr);
 
     const interval = setInterval(() => {
-      setParticles(prev =>
-        prev.map(p => {
+      setParticles((prev) =>
+        prev.map((p) => {
           let newY = p.y + p.speed;
-          if (newY > window.innerHeight) newY = 0;
-          return { ...p, y: newY };
+          if (newY > window.innerHeight) newY = -p.size;
+          let newRotation = (p.rotation + p.rotSpeed) % 360;
+          return { ...p, y: newY, rotation: newRotation };
         })
       );
     }, 16);
+
     return () => clearInterval(interval);
   }, [num]);
 
   return (
-    <div style={particleContainerStyle}>
+    <div style={{ ...particleContainerStyle, position: "fixed", zIndex: 0 }}>
       {particles.map((p, i) => (
-        <div
+        <img
           key={i}
+          src={p.src} // ランダム画像
+          alt=""
           style={{
             position: "absolute",
             top: p.y,
@@ -93,7 +114,9 @@ function ParticleBackground({ num }: { num: number }) {
             width: p.size,
             height: p.size,
             borderRadius: "50%",
-            background: "rgba(255, 255, 255, 0.2)",
+            transform: `rotate(${p.rotation}deg)`,
+            pointerEvents: "none",
+            userSelect: "none",
           }}
         />
       ))}
@@ -104,7 +127,12 @@ function ParticleBackground({ num }: { num: number }) {
 // ----------------- AgeCounter（ポップカード版） -----------------
 function AgeCounter() {
   const birthDate = new Date("2025-06-08T00:00:00");
-  const [diff, setDiff] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [diff, setDiff] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -136,7 +164,15 @@ function AgeCounter() {
 }
 
 // ----------------- TimeBlockサブコンポーネント -----------------
-function TimeBlock({ label, value, color }: { label: string; value: number; color: string }) {
+function TimeBlock({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: number;
+  color: string;
+}) {
   return (
     <div style={{ ...timeBlockStyle, backgroundColor: color }}>
       <p style={timeValueStyle}>{value}</p>
@@ -148,7 +184,12 @@ function TimeBlock({ label, value, color }: { label: string; value: number; colo
 // ----------------- ActionButton -----------------
 function ActionButton({ href, label }: { href: string; label: string }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" style={buttonStyle}>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={buttonStyle}
+    >
       {label}
     </a>
   );
@@ -266,11 +307,9 @@ const timeLabelStyle: React.CSSProperties = {
 };
 
 const particleContainerStyle: React.CSSProperties = {
-  position: "absolute",
   top: 0,
   left: 0,
   width: "100%",
   height: "100%",
   overflow: "hidden",
-  zIndex: 1,
 };
