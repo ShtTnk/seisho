@@ -30,7 +30,7 @@ export default function Home() {
           transition: "all 0.7s",
         }}
       >
-        <h1 style={titleStyle}>😎Login For Seisho's Secret Base😎</h1>
+        <h1 style={titleStyle}>😎Login For Secret Base😎</h1>
         <p style={subtitleStyle}>🖋パスワードを入力してアクセスしてください🖋</p>
         <p style={subtitleStyle}>🏠せいしょうのひみつきち🏠</p>
         <div style={{ position: "relative", width: "100%" }}>
