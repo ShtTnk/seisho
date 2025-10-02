@@ -113,6 +113,7 @@ function ParticleBackground({ num }: { num: number }) {
             transform: `rotate(${p.rotation}deg)`,
             pointerEvents: "none",
             userSelect: "none",
+            filter: "brightness(1.2) drop-shadow(0 0 10px rgba(255,255,255,0.4))",
           }}
         />
       ))}
@@ -216,16 +217,16 @@ const mainStyle: React.CSSProperties = {
 };
 
 const cardStyle: React.CSSProperties = {
-  background: "rgba(40,40,40,0.85)",
+  background: "rgba(40, 40, 40, 0.7)",
   padding: "2rem",
   borderRadius: "2rem",
-  boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
+  boxShadow: "rgba(0,0,0,0.4)",
   textAlign: "center",
   display: "flex",
   flexDirection: "column",
   gap: "2rem",
   margin: "0 auto",
-  maxWidth: "90%",
+  maxWidth: "70%",
   width: "600px",
   alignItems: "center",
 };

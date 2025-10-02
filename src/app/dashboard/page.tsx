@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { startTransition } from "react";
+import { start } from "repl";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -27,7 +28,6 @@ export default function Dashboard() {
       setCountdown(prev => {
         if (prev <= 1) {
           clearInterval(interval);
-          startTransition
           router.push("/dashboard/toppage");
           return 0;
         }
@@ -135,17 +135,16 @@ const pageStyle: React.CSSProperties = {
   position: "relative",
 };
 const cardStyle: React.CSSProperties = {
-  background: "rgba(40,40,40,0.85)",
-  padding: "2rem",
-  borderRadius: "2rem",
-  boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
+  background: "rgba(40,40,40,0.6)", // 透明度アップ
+  padding: "1.5rem",
+  borderRadius: "1.5rem",
+  boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
   textAlign: "center",
   display: "flex",
   flexDirection: "column",
-  gap: "2rem",
+  gap: "1.5rem",
   margin: "0 auto",
-  maxWidth: "90%",
-  width: "600px",
+  maxWidth: "600px",   // 固定幅ちょい小さめ
+  width: "80%",        // 画面いっぱい使わんように
   alignItems: "center",
-  position: "relative",
 };
