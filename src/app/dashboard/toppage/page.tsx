@@ -35,7 +35,7 @@ export default function Toppage() {
             }}
           />
           <p style={subtitleStyle}>
-            I am not sleeping. Rather, I am observing this world with eyes👀
+            I am not sleeping. Rather, I am observing this world with my eyes👀
           </p>
           <h2 style={subtitleStyle}>Thank you for coming💛</h2>
           <div style={buttonContainer}>
