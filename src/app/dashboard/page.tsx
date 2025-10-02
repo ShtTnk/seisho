@@ -102,7 +102,7 @@ export default function Dashboard() {
         <h1 style={titleStyle}>Dashboard</h1>
         <Image
           src="/daddy_mummy.jpg"
-          alt="かわいい赤ん坊"
+          alt="family_pic"
           width={400}
           height={400}
           style={{
@@ -112,9 +112,9 @@ export default function Dashboard() {
             height: "auto",
           }}
         />
+        <p style={subtitleStyle}>{countdown}秒後にトップページに移動します...</p>
         <p style={subtitleStyle}>ようこそ！ログイン成功しました</p>
         <p style={subtitleStyle}>楽しんでいってね(⋈◍＞◡＜◍)。✧♡</p>
-        <p style={subtitleStyle}>{countdown}秒後にトップページに移動します...</p>
       </div>
     </div>
   );
