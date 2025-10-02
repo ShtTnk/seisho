@@ -37,6 +37,7 @@ export default function Dashboard() {
       <div style={{ ...cardStyle, opacity: showCard ? 1 : 0, transform: showCard ? "translateY(0)" : "translateY(-20px)", transition: "all 0.7s" }}>
         <h1 style={titleStyle}>Dashboard</h1>
         <p style={subtitleStyle}>ようこそ！ログイン成功しました</p>
+        <p style={subtitleStyle}>楽しんでいってね(⋈◍＞◡＜◍)。✧♡</p>
         <p style={subtitleStyle}>3秒後にトップページに移動します...</p>
       </div>
       <style>{`
