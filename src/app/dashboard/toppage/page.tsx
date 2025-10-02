@@ -69,12 +69,8 @@ function ParticleBackground({ num }: { num: number }) {
   >([]);
 
   const images = ["/daddy.jpg", "/mummy.jpg", "/sei-chan.jpg"]; // ←ここに画像3種類
-  const sparkle = new Audio("/sparkle.mp3"); // 公開フォルダに置いた音
-  const [audioAllowed, setAudioAllowed] = useState(false);
 
   useEffect(() => {
-    sparkle.play().catch(() => {});
-    sparkle.loop = true;
     const arr = Array.from({ length: num }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
@@ -91,7 +87,7 @@ function ParticleBackground({ num }: { num: number }) {
         prev.map((p) => {
           let newY = p.y + p.speed;
           if (newY > window.innerHeight) newY = -p.size;
-          let newRotation = (p.rotation + p.rotSpeed) % 360;
+          const newRotation = (p.rotation + p.rotSpeed) % 360;
           return { ...p, y: newY, rotation: newRotation };
         })
       );
