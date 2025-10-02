@@ -1,103 +1,123 @@
-import Image from "next/image";
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { FiEye, FiEyeOff } from "react-icons/fi"; // ← 追加
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [showCard, setShowCard] = useState(false);
+  const router = useRouter();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  useEffect(() => setShowCard(true), []);
+
+  const handleLogin = () => {
+    if (password === process.env.NEXT_PUBLIC_LOGIN_PASSWORD) {
+      router.push("/dashboard");
+    } else {
+      setError("パスワードが違います");
+    }
+  };
+
+  return (
+    <div style={pageStyle}>
+      <div
+        style={{
+          ...cardStyle,
+          opacity: showCard ? 1 : 0,
+          transform: showCard ? "translateY(0)" : "translateY(-20px)",
+          transition: "all 0.7s",
+        }}
+      >
+        <h1 style={titleStyle}>Login</h1>
+        <p style={subtitleStyle}>パスワードを入力してアクセスしてください</p>
+
+        <div style={{ position: "relative", width: "100%" }}>
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={inputStyle}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            style={{
+              position: "absolute",
+              right: 10,
+              top: "50%",
+              transform: "translateY(-50%)",
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              color: "#ccc",
+              fontSize: "1.2rem",
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {showPassword ? <FiEyeOff /> : <FiEye />}
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <button onClick={handleLogin} style={buttonStyle}>
+          Enter
+        </button>
+        {error && <p style={errorStyle}>{error}</p>}
+      </div>
     </div>
   );
 }
+
+// ---------- CSS in JS ----------
+const pageStyle: React.CSSProperties = {
+  minHeight: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "linear-gradient(135deg, #1e1e1e, #2c2c2c, #111)",
+  color: "#f0f0f0",
+  fontFamily: "sans-serif",
+  position: "relative",
+  overflow: "hidden",
+};
+
+const cardStyle: React.CSSProperties = {
+  background: "rgba(40,40,40,0.85)",
+  padding: "2rem",
+  borderRadius: "2rem",
+  boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
+  textAlign: "center",
+  display: "flex",
+  flexDirection: "column",
+  gap: "1rem",
+  margin: "0 auto",
+  maxWidth: "90%",
+  width: "400px",
+  alignItems: "center",
+};
+
+const titleStyle: React.CSSProperties = { fontSize: "2rem", fontWeight: 700 };
+const subtitleStyle: React.CSSProperties = { fontSize: "1rem", color: "#ccc" };
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "0.8rem 2.5rem 0.8rem 0.8rem", // 右にアイコン分padding
+  borderRadius: "0.8rem",
+  border: "none",
+  background: "#2c2c2c",
+  color: "#f0f0f0",
+  outline: "none",
+  boxSizing: "border-box", // ← これ大事！枠内で収める
+};
+const buttonStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "0.8rem",
+  borderRadius: "0.8rem",
+  background: "#3b82f6",
+  color: "#fff",
+  fontWeight: 600,
+  cursor: "pointer",
+  border: "none",
+  transition: "all 0.3s",
+};
+const errorStyle: React.CSSProperties = { color: "#f87171", marginTop: "0.5rem" };
